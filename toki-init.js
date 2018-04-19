@@ -8,6 +8,7 @@ const download = require('./toki-download');
 const rm = require('rimraf');
 const inquirer = require('inquirer');
 const generator = require('./generator');
+const chalk = require('chalk');
 
 program.usage('<project-name>').parse(process.argv);
 
@@ -59,9 +60,9 @@ const go = () => {
         return(
             download(projectRoot).then(target => {
                 copy(target);
-                // rm(path.resolve(process.cwd(), target), err => {
-                //     if (err) console.log(err);
-                // });
+                rm(path.resolve(process.cwd(), target), err => {
+                    if (err) console.log(err);
+                });
                 return {
                     name: projectRoot,
                     root: projectRoot,
@@ -92,10 +93,12 @@ const go = () => {
             }
         })
     }).then(context => {
-        return generator(context.metaData, context.root, context.root);
+        generator(context.metaData, context.root, context.root);
+        return context;
     }).then(context => {
-        console.log('创建成功啦')
-    }).catch(err => console.log(err));
+        console.log(chalk.yellow('创建成功啦，请运行以下命令启动项目：'));
+        console.log(chalk.green(`cd ${context.root} \nnpm install\nnpm run dev`));
+    }).catch(err => console.error(chalk.red(`创建失败：${err || err.message || ''}`)));
 }
 
 const copy = (filePath, parentPath = '.') => {
