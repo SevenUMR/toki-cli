@@ -16,7 +16,7 @@
     "commander": "^2.15.1",
     "download-git-repo": "^1.0.2",
     "glob": "^7.1.2",
-    "handlebars": "^4.0.11",
+    "handlebars": "^4.0.14",
     "inquirer": "^5.2.0",
     "metalsmith": "^2.3.0",
     "ora": "^2.0.0"
